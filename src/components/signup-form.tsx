@@ -9,11 +9,23 @@ import {
 import { Input } from "@/components/ui/input"
 import { ShineBorder } from "./ui/shine-border"
 import { RippleButton } from "./ui/ripple-button"
+import { useFormik } from "formik"
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const formik = useFormik({
+    initialValues: {
+      fullName: "Moji",
+      email: "",
+      password: "",
+    },
+    onSubmit: (values) => {
+      console.log(values)
+    },
+  })
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="relative">
@@ -22,25 +34,43 @@ export function SignupForm({
           <CardTitle className="text-xl">Create your account</CardTitle>
         </CardHeader>
         <CardContent>
-          <form>
+          <form onSubmit={formik.handleSubmit}>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="name">Full Name</FieldLabel>
-                <Input id="name" type="text" placeholder="John Doe" required />
+                <Input
+                  name="fullName"
+                  value={formik.values.fullName}
+                  id="name"
+                  type="text"
+                  placeholder="John Doe"
+                  required
+                  onChange={formik.handleChange}
+                />
               </Field>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
+                  name="email"
+                  value={formik.values.email}
                   id="email"
                   type="email"
                   placeholder="m@example.com"
                   required
+                  onChange={formik.handleChange}
                 />
               </Field>
               <Field>
                 <Field>
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <Input id="password" type="password" required />
+                  <Input
+                    name="password"
+                    value={formik.values.password}
+                    id="password"
+                    type="password"
+                    required
+                    onChange={formik.handleChange}
+                  />
                 </Field>
                 <FieldDescription>
                   Must be at least 8 characters long.
@@ -48,7 +78,7 @@ export function SignupForm({
               </Field>
               <Field>
                 {/* <Button type="submit">Create Account</Button> */}
-                <RippleButton type="submit">Ripple Button</RippleButton>
+                <RippleButton type="submit">Submit</RippleButton>
               </Field>
             </FieldGroup>
           </form>
