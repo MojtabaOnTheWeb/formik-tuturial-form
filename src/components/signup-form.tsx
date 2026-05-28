@@ -10,45 +10,58 @@ import { Input } from "@/components/ui/input"
 import { ShineBorder } from "./ui/shine-border"
 import { RippleButton } from "./ui/ripple-button"
 import { useFormik } from "formik"
+import * as Yup from "yup"
+
+/* const emailReg =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ */
+
+const initialValues = {
+  fullName: "",
+  email: "",
+  password: "",
+}
+const onSubmit = (values: object) => {
+  console.log(values)
+}
+
+const validationSchema = Yup.object({
+  fullName: Yup.string().required("Please enter your full name!"),
+  email: Yup.string()
+    .required("Please enter your email!")
+    .email("invalidEmail"),
+  password: Yup.string().required("Please enter your password!").min(8),
+})
+
+/* const validate = (values) => {
+  let errors = {
+    fullName: "",
+    email: "",
+    password: "",
+  }
+  if (!values.fullName) {
+    errors.fullName = "Please enter your full name!"
+  }
+  if (!values.email) {
+    errors.email = "Please enter your email!"
+  } else if (!emailReg.test(values.email.trim())) {
+    errors.email = "invalidEmail"
+  }
+  if (!values.password) {
+    errors.password = "Please enter your password!"
+  }
+  return errors
+} */
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  const emailReg =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-
   const formik = useFormik({
-    initialValues: {
-      fullName: "",
-      email: "",
-      password: "",
-    },
-    onSubmit: (values) => {
-      console.log(values)
-    },
-    validate: (values) => {
-      let errors = {
-        fullName: "",
-        email: "",
-        password: "",
-      }
-      if (!values.fullName) {
-        errors.fullName = "Please enter your full name!"
-      }
-      if (!values.email) {
-        errors.email = "Please enter your email!"
-      } else if (!emailReg.test(values.email)) {
-        errors.email = "invalidEmail"
-      }
-      if (!values.password) {
-        errors.password = "Please enter your password!"
-      }
-      return errors
-    },
+    initialValues,
+    onSubmit,
+    // validate,
+    validationSchema,
   })
-
-  console.log(formik.errors)
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -69,13 +82,10 @@ export function SignupForm({
               >
                 <FieldLabel htmlFor="name">Full Name</FieldLabel>
                 <Input
-                  name="fullName"
-                  value={formik.values.fullName}
                   id="name"
                   type="text"
                   placeholder="John Doe"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
+                  {...formik.getFieldProps("fullName")}
                   aria-invalid={
                     formik.errors.fullName && formik.touched.fullName
                       ? "true"
@@ -92,13 +102,10 @@ export function SignupForm({
               >
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
-                  name="email"
-                  value={formik.values.email}
                   id="email"
                   type="text"
                   placeholder="m@example.com"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
+                  {...formik.getFieldProps("email")}
                   aria-invalid={
                     formik.errors.email && formik.touched.email
                       ? "true"
@@ -121,12 +128,9 @@ export function SignupForm({
                 >
                   <FieldLabel htmlFor="password">Password</FieldLabel>
                   <Input
-                    name="password"
-                    value={formik.values.password}
                     id="password"
                     type="password"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
+                    {...formik.getFieldProps("password")}
                     aria-invalid={
                       formik.errors.password && formik.touched.password
                         ? "true"
