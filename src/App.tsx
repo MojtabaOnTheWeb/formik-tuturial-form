@@ -1,18 +1,14 @@
-import { Button } from "@/components/ui/button"
+import { GravityStarsBackground } from "./components/animate-ui/components/backgrounds/gravity-stars"
+import { SignupForm } from "./components/signup-form"
 
 export function App() {
   return (
-    <div className="flex min-h-svh p-6">
-      <div className="flex max-w-md min-w-0 flex-col gap-4 text-sm leading-loose">
-        <div>
-          <h1 className="font-medium">Project ready!</h1>
-          <p>You may now add components and start building.</p>
-          <p>We&apos;ve already added the button component for you.</p>
-          <Button className="mt-2">Button</Button>
-        </div>
-        <div className="font-mono text-xs text-muted-foreground">
-          (Press <kbd>d</kbd> to toggle dark mode)
-        </div>
+    <div className="flex h-screen w-screen items-center justify-center">
+      <div className="w-120">
+        <SignupForm />
+      </div>
+      <div className="fixed top-0 left-0 -z-10 h-full w-full">
+        <GravityStarsBackground />
       </div>
     </div>
   )
