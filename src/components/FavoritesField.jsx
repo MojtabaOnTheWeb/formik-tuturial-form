@@ -33,19 +33,21 @@ const FavoritesField = (props) => {
               return (
                 <div key={i}>
                   <FieldGroup className="flex flex-row">
-                    <Input
-                      type="text"
-                      placeholder=""
-                      {...field}
-                      aria-invalid={
-                        meta.touched && meta.error ? true : undefined
-                      }
-                    />
-                    {meta.touched && meta.error ? (
-                      <FieldDescription className="text-red-400">
-                        {meta.error}
-                      </FieldDescription>
-                    ) : null}
+                    <Field>
+                      <Input
+                        type="text"
+                        placeholder=""
+                        {...field}
+                        aria-invalid={
+                          meta.touched && meta.error ? true : undefined
+                        }
+                      />
+                      {meta.touched && meta.error ? (
+                        <FieldDescription className="text-red-400">
+                          {meta.error}
+                        </FieldDescription>
+                      ) : null}
+                    </Field>
                     {favorites.length > 1 && (
                       <span
                         className="translate-y-1 opacity-80 hover:opacity-100"
