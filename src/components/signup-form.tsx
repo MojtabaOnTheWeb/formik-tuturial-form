@@ -29,7 +29,9 @@ const validationSchema = Yup.object({
   email: Yup.string()
     .required("Please enter your email!")
     .email("Please enter a correct email!"),
-  password: Yup.string().required("Please enter your password!").min(8),
+  password: Yup.string()
+    .required("Please enter your password!")
+    .min(8, "Password must be at least 8 characters!"),
 })
 
 export function SignupForm({
@@ -59,41 +61,103 @@ export function SignupForm({
             <Form>
               <FieldGroup>
                 <Field>
-                  <FieldLabel htmlFor="name">Full Name</FieldLabel>
-                  <FormikField
-                    component={Input}
-                    id="name"
-                    type="text"
-                    placeholder="John Doe"
-                    name="fullName"
-                  />
-                  <ErrorMessage name="fullName" />
+                  <FormikField name="fullName">
+                    {({ field, form, meta }) => {
+                      return (
+                        <>
+                          <FieldLabel
+                            className={`${meta.touched && meta.error ? "text-red-400" : null}`}
+                            htmlFor="fullName"
+                          >
+                            Full Name
+                          </FieldLabel>
+                          <Input
+                            type="text"
+                            placeholder="John Doe"
+                            id="fullName"
+                            {...field}
+                            aria-invalid={
+                              meta.touched && meta.error ? true : null
+                            }
+                          />
+                          {meta.touched && meta.error ? (
+                            <FieldDescription className="text-red-400">
+                              {meta.error}
+                            </FieldDescription>
+                          ) : null}
+                        </>
+                      )
+                    }}
+                  </FormikField>
                 </Field>
                 <Field>
-                  <FieldLabel htmlFor="email">Email</FieldLabel>
-                  <FormikField
-                    component={Input}
-                    id="email"
-                    type="text"
-                    placeholder="m@example.com"
-                    name="email"
-                  />
-                  <ErrorMessage name="email" />
+                  <FormikField name="email">
+                    {({ field, form, meta }) => {
+                      return (
+                        <>
+                          <FieldLabel
+                            className={`${meta.touched && meta.error ? "text-red-400" : null}`}
+                            htmlFor="email"
+                          >
+                            Email
+                          </FieldLabel>
+                          <Input
+                            type="text"
+                            placeholder="m@example.com"
+                            id="email"
+                            {...field}
+                            aria-invalid={
+                              meta.touched && meta.error ? true : null
+                            }
+                          />
+                          {meta.touched && meta.error ? (
+                            <FieldDescription className="text-red-400">
+                              {meta.error}
+                            </FieldDescription>
+                          ) : null}
+                        </>
+                      )
+                    }}
+                  </FormikField>
                 </Field>
                 <Field>
                   <Field>
-                    <FieldLabel htmlFor="password">Password</FieldLabel>
-                    <FormikField
-                      component={Input}
-                      id="password"
-                      type="password"
-                      name="password"
-                    />
-                    <ErrorMessage name="password" />
+                    <FormikField name="password">
+                      {({ field, form, meta }) => {
+                        return (
+                          <>
+                            <FieldLabel
+                              className={`${meta.touched && meta.error ? "text-red-400" : null}`}
+                              htmlFor="password"
+                            >
+                              Password
+                            </FieldLabel>
+                            <Input
+                              type="password"
+                              id="password"
+                              {...field}
+                              aria-invalid={
+                                meta.touched && meta.error ? true : null
+                              }
+                            />
+                            {meta.touched && meta.error ? (
+                              <FieldDescription className="text-red-400">
+                                {meta.error}
+                              </FieldDescription>
+                            ) : meta.value.length >= 8 ? (
+                              <FieldDescription>
+                                Password is okay!
+                              </FieldDescription>
+                            ) : (
+                              <FieldDescription>
+                                Must be at least 8 characters long.
+                              </FieldDescription>
+                            )}
+                          </>
+                        )
+                      }}
+                    </FormikField>
                   </Field>
-                  <FieldDescription>
-                    Must be at least 8 characters long.
-                  </FieldDescription>
                 </Field>
                 <Field>
                   {/* <Button type="submit">Create Account</Button> */}
