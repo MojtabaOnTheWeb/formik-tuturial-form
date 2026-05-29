@@ -13,18 +13,19 @@ import { PlusIcon, CircleMinus } from "lucide-react"
 const FavoritesField = (props) => {
   const { form, push, remove } = props
   const { favorites } = form.values
-  console.log(favorites)
 
   return (
     <>
       <FieldLabel htmlFor="favorites">
         Favorites
-        <span
-          className="cursor-pointer opacity-80 hover:opacity-100"
-          onClick={() => push("")}
-        >
-          <PlusIcon />
-        </span>
+        {favorites.length < 5 ? (
+          <span
+            className="cursor-pointer opacity-80 hover:opacity-100"
+            onClick={() => push("")}
+          >
+            <PlusIcon />
+          </span>
+        ) : undefined}
       </FieldLabel>
       {favorites.map((fav, i) => {
         return (
