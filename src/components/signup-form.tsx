@@ -18,6 +18,7 @@ import {
 } from "formik"
 import * as Yup from "yup"
 import FavoritesField from "./FavoritesField"
+import { useEffect, useState } from "react"
 
 /* const emailReg =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ */
@@ -33,18 +34,22 @@ const initialValues = {
   phone: ["", ""],
   favorites: [""],
 }
-const onSubmit = (values: object, submitProps: object) => {
-  console.log(values, submitProps)
+const onSubmit = (values, submitProps) => {
+  console.log(submitProps)
+
   setTimeout(() => {
+    submitProps.resetForm({
+      values: initialValues,
+    })
     submitProps.setSubmitting(false)
   }, 3000)
 }
 
 const dangerousPatterns = [
-  /<script.*?>.*?<\/script>/gi, // XSS
-  /('|--|;|\/\*|\*\/|xp_)/gi, // SQL injection
-  /\b(SELECT|INSERT|DELETE|UPDATE|DROP|UNION)\b/gi,
-  /(\||&&|;)/g, // command injection
+  /<script.*?>.*?<\/script>/i, // XSS
+  /('|--|;|\/\*|\*\/|xp_)/i, // SQL injection
+  /\b(SELECT|INSERT|DELETE|UPDATE|DROP|UNION)\b/i,
+  /(\||&&|;)/, // command injection
 ]
 
 const isSafeString = (value: string) => {
@@ -108,15 +113,33 @@ export function SignupForm({
     validationSchema,
   }) */
 
+  const [savedData, setSavedData] = useState(null)
+  const [myValues, setMyValues] = useState(null)
+
+  const handleSaveData = (formik) => {
+    localStorage.setItem("savedData", JSON.stringify(formik.values))
+  }
+
+  const handleGetSaveData = () => {
+    setMyValues(savedData)
+  }
+
+  useEffect(() => {
+    setSavedData(JSON.parse(localStorage.getItem("savedData")))
+  }, [])
+
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={myValues || initialValues}
       validationSchema={validationSchema}
       onSubmit={onSubmit}
       validateOnBlur={false}
-      validateOnChange={false}
+      validateOnChange={true}
+      enableReinitialize
     >
       {(formik) => {
+        console.log(formik)
+
         return (
           <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card className="relative">
@@ -368,7 +391,6 @@ export function SignupForm({
                       </Field>
                     </Field>
                     <Field>
-                      {/* <Button type="submit">Create Account</Button> */}
                       <RippleButton
                         type="submit"
                         disabled={formik.isSubmitting}
@@ -376,6 +398,23 @@ export function SignupForm({
                         Submit
                       </RippleButton>
                     </Field>
+                    {formik.isValid && formik.dirty ? (
+                      <Field>
+                        <RippleButton
+                          type="button"
+                          onClick={() => handleSaveData(formik)}
+                        >
+                          Save on the system
+                        </RippleButton>
+                      </Field>
+                    ) : undefined}
+                    {savedData ? (
+                      <Field>
+                        <RippleButton type="button" onClick={handleGetSaveData}>
+                          Get system info
+                        </RippleButton>
+                      </Field>
+                    ) : undefined}
                   </FieldGroup>
                 </Form>
               </CardContent>
