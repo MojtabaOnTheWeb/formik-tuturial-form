@@ -18,6 +18,7 @@ import {
 } from "formik"
 import * as Yup from "yup"
 import FavoritesField from "./FavoritesField"
+import FormikControl from "./formikElements/FormikControl"
 import { useEffect, useState } from "react"
 
 /* const emailReg =
@@ -134,7 +135,7 @@ export function SignupForm({
       validationSchema={validationSchema}
       onSubmit={onSubmit}
       validateOnBlur={false}
-      validateOnChange={true}
+      validateOnChange={false}
       enableReinitialize
     >
       {(formik) => {
@@ -151,244 +152,76 @@ export function SignupForm({
                 <Form>
                   <FieldGroup>
                     <Field>
-                      <FormikField name="fullName">
-                        {({ field, meta /* form */ }: FieldProps) => {
-                          return (
-                            <>
-                              <FieldLabel
-                                className={`${meta.touched && meta.error ? "text-red-400" : null}`}
-                                htmlFor="fullName"
-                              >
-                                Full Name
-                              </FieldLabel>
-                              <Input
-                                type="text"
-                                placeholder="John Doe"
-                                id="fullName"
-                                {...field}
-                                aria-invalid={
-                                  meta.touched && meta.error ? true : undefined
-                                }
-                              />
-                              {meta.touched && meta.error ? (
-                                <FieldDescription className="text-red-400">
-                                  {meta.error}
-                                </FieldDescription>
-                              ) : null}
-                            </>
-                          )
-                        }}
-                      </FormikField>
+                      <FormikControl
+                        control="input"
+                        type="text"
+                        label="Full Name"
+                        name="fullName"
+                        placeholder="John Smith"
+                      />
                     </Field>
                     <Field>
-                      <FormikField name="email">
-                        {({ field, meta /* form */ }: FieldProps) => {
-                          return (
-                            <>
-                              <FieldLabel
-                                className={`${meta.touched && meta.error ? "text-red-400" : null}`}
-                                htmlFor="email"
-                              >
-                                Email
-                              </FieldLabel>
-                              <Input
-                                type="text"
-                                placeholder="m@example.com"
-                                id="email"
-                                {...field}
-                                aria-invalid={
-                                  meta.touched && meta.error ? true : undefined
-                                }
-                              />
-                              {meta.touched && meta.error ? (
-                                <FieldDescription className="text-red-400">
-                                  {meta.error}
-                                </FieldDescription>
-                              ) : null}
-                            </>
-                          )
-                        }}
-                      </FormikField>
+                      <FormikControl
+                        control="input"
+                        type="text"
+                        label="Email"
+                        name="email"
+                        placeholder="m@example.com"
+                      />
                     </Field>
                     <FieldGroup className="grid max-w-md grid-cols-2">
                       <Field>
-                        <FormikField name="address.city">
-                          {({ field, meta /* form */ }: FieldProps) => {
-                            return (
-                              <>
-                                <FieldLabel
-                                  className={`${meta.touched && meta.error ? "text-red-400" : null}`}
-                                  htmlFor="city"
-                                >
-                                  City
-                                </FieldLabel>
-                                <Input
-                                  type="text"
-                                  placeholder="New York"
-                                  id="city"
-                                  {...field}
-                                  aria-invalid={
-                                    meta.touched && meta.error
-                                      ? true
-                                      : undefined
-                                  }
-                                />
-                                {meta.touched && meta.error ? (
-                                  <FieldDescription className="text-red-400">
-                                    {meta.error}
-                                  </FieldDescription>
-                                ) : null}
-                              </>
-                            )
-                          }}
-                        </FormikField>
+                        <FormikControl
+                          control="input"
+                          type="text"
+                          label="City"
+                          name="address.city"
+                          placeholder="New York"
+                        />
                       </Field>
                       <Field>
-                        <FormikField name="address.postalCode">
-                          {({ field, meta /* form */ }: FieldProps) => {
-                            return (
-                              <>
-                                <FieldLabel
-                                  className={`${meta.touched && meta.error ? "text-red-400" : null}`}
-                                  htmlFor="postalCode"
-                                >
-                                  Postal Code
-                                </FieldLabel>
-                                <Input
-                                  type="text"
-                                  placeholder="1234"
-                                  id="postalCode"
-                                  {...field}
-                                  aria-invalid={
-                                    meta.touched && meta.error
-                                      ? true
-                                      : undefined
-                                  }
-                                />
-                                {meta.touched && meta.error ? (
-                                  <FieldDescription className="text-red-400">
-                                    {meta.error}
-                                  </FieldDescription>
-                                ) : null}
-                              </>
-                            )
-                          }}
-                        </FormikField>
+                        <FormikControl
+                          control="input"
+                          type="text"
+                          label="Postal Code"
+                          name="address.postalCode"
+                          placeholder="4040"
+                        />
                       </Field>
                     </FieldGroup>
                     <FieldGroup className="grid max-w-md grid-cols-2">
                       <Field>
-                        <FormikField name="phone[0]">
-                          {({ field, meta /* form */ }: FieldProps) => {
-                            return (
-                              <>
-                                <FieldLabel
-                                  className={`${meta.touched && meta.error ? "text-red-400" : null}`}
-                                  htmlFor="mobilePhone"
-                                >
-                                  Mobile Phone
-                                </FieldLabel>
-                                <Input
-                                  type="text"
-                                  placeholder="0912345678"
-                                  id="mobilePhone"
-                                  {...field}
-                                  aria-invalid={
-                                    meta.touched && meta.error
-                                      ? true
-                                      : undefined
-                                  }
-                                />
-                                {meta.touched && meta.error ? (
-                                  <FieldDescription className="text-red-400">
-                                    {meta.error}
-                                  </FieldDescription>
-                                ) : null}
-                              </>
-                            )
-                          }}
-                        </FormikField>
+                        <FormikControl
+                          control="input"
+                          type="text"
+                          label="Mobile Phone"
+                          name="phone[0]"
+                          placeholder="09122131223"
+                        />
                       </Field>
                       <Field>
-                        <FormikField name="phone[1]">
-                          {({ field, meta /* form */ }: FieldProps) => {
-                            return (
-                              <>
-                                <FieldLabel
-                                  className={`${meta.touched && meta.error ? "text-red-400" : null}`}
-                                  htmlFor="telePhone"
-                                >
-                                  Telephone
-                                </FieldLabel>
-                                <Input
-                                  type="text"
-                                  placeholder="0123456789"
-                                  id="telePhone"
-                                  {...field}
-                                  aria-invalid={
-                                    meta.touched && meta.error
-                                      ? true
-                                      : undefined
-                                  }
-                                />
-                                {meta.touched && meta.error ? (
-                                  <FieldDescription className="text-red-400">
-                                    {meta.error}
-                                  </FieldDescription>
-                                ) : null}
-                              </>
-                            )
-                          }}
-                        </FormikField>
+                        <FormikControl
+                          control="input"
+                          type="text"
+                          label="Telephone"
+                          name="phone[1]"
+                          placeholder="01221312233"
+                        />
                       </Field>
                     </FieldGroup>
                     <Field>
-                      <Field>
-                        <FieldArray name="favorites">
-                          {(props) => <FavoritesField {...props} />}
-                        </FieldArray>
-                      </Field>
+                      <FieldArray name="favorites">
+                        {(props) => <FavoritesField {...props} />}
+                      </FieldArray>
                     </Field>
                     <Field>
-                      <Field>
-                        <FormikField name="password">
-                          {({ field, meta /* form */ }: FieldProps) => {
-                            return (
-                              <>
-                                <FieldLabel
-                                  className={`${meta.touched && meta.error ? "text-red-400" : null}`}
-                                  htmlFor="password"
-                                >
-                                  Password
-                                </FieldLabel>
-                                <Input
-                                  type="password"
-                                  id="password"
-                                  {...field}
-                                  aria-invalid={
-                                    meta.touched && meta.error
-                                      ? true
-                                      : undefined
-                                  }
-                                />
-                                {meta.touched && meta.error ? (
-                                  <FieldDescription className="text-red-400">
-                                    {meta.error}
-                                  </FieldDescription>
-                                ) : meta.value.length >= 8 ? (
-                                  <FieldDescription>
-                                    Password is okay!
-                                  </FieldDescription>
-                                ) : (
-                                  <FieldDescription>
-                                    Must be at least 8 characters long.
-                                  </FieldDescription>
-                                )}
-                              </>
-                            )
-                          }}
-                        </FormikField>
-                      </Field>
+                      <FormikControl
+                        control="password"
+                        type="password"
+                        label="Password"
+                        name="password"
+                        placeholder=""
+                      />
                     </Field>
                     <Field>
                       <RippleButton
