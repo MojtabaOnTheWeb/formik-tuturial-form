@@ -34,10 +34,11 @@ const initialValues = {
   },
   phone: ["", ""],
   favorites: [""],
+  education: "",
+  gender: "",
+  skill: [""],
 }
 const onSubmit = (values, submitProps) => {
-  console.log(submitProps)
-
   setTimeout(() => {
     submitProps.resetForm({
       values: initialValues,
@@ -51,6 +52,25 @@ const dangerousPatterns = [
   /('|--|;|\/\*|\*\/|xp_)/i, // SQL injection
   /\b(SELECT|INSERT|DELETE|UPDATE|DROP|UNION)\b/i,
   /(\||&&|;)/, // command injection
+]
+
+const educations = [
+  { id: 1, value: "Elementary" },
+  { id: 2, value: "Junior" },
+  { id: 3, value: "Senior" },
+  { id: 4, value: "Phd" },
+]
+
+const gender = [
+  { id: 1, value: "male" },
+  { id: 2, value: "female" },
+]
+
+const skills = [
+  { id: 1, value: "C++" },
+  { id: 2, value: "Python" },
+  { id: 3, value: "Java" },
+  { id: 4, value: "Swift" },
 ]
 
 const isSafeString = (value: string) => {
@@ -101,6 +121,8 @@ const validationSchema = Yup.object({
       )
       .required("Please fill this part!")
   ),
+  education: Yup.string().required("Please fill this part!"),
+  gender: Yup.string().required("Please fill this part!"),
 })
 
 export function SignupForm({
@@ -139,8 +161,6 @@ export function SignupForm({
       enableReinitialize
     >
       {(formik) => {
-        console.log(formik)
-
         return (
           <div className={cn("flex flex-col gap-6", className)} {...props}>
             <Card className="relative">
@@ -221,6 +241,35 @@ export function SignupForm({
                         label="Password"
                         name="password"
                         placeholder=""
+                      />
+                    </Field>
+                    <FieldGroup className="grid max-w-md grid-cols-2">
+                      <Field>
+                        <FormikControl
+                          control="select"
+                          type="select"
+                          label="Education"
+                          name="education"
+                          options={educations}
+                        />
+                      </Field>
+                      <Field>
+                        <FormikControl
+                          control="radio"
+                          type="radio"
+                          label="Gender"
+                          name="gender"
+                          options={gender}
+                        />
+                      </Field>
+                    </FieldGroup>
+                    <Field>
+                      <FormikControl
+                        control="checkbox"
+                        type="checkbox"
+                        label="Skills"
+                        name="skill"
+                        options={skills}
                       />
                     </Field>
                     <Field>
