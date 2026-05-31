@@ -1,21 +1,9 @@
 import { cn } from "@/lib/utils"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+import { Field, FieldGroup } from "@/components/ui/field"
 import { ShineBorder } from "./ui/shine-border"
 import { RippleButton } from "./ui/ripple-button"
-import {
-  Form,
-  Formik,
-  FieldArray,
-  FastField as FormikField,
-  type FieldProps,
-} from "formik"
+import { Form, Formik, FieldArray, type FormikValues } from "formik"
 import * as Yup from "yup"
 import FavoritesField from "./FavoritesField"
 import FormikControl from "./formikElements/FormikControl"
@@ -38,7 +26,7 @@ const initialValues = {
   gender: "",
   skill: [""],
 }
-const onSubmit = (values, submitProps) => {
+const onSubmit = (submitProps: FormikControl) => {
   setTimeout(() => {
     submitProps.resetForm({
       values: initialValues,
@@ -139,7 +127,7 @@ export function SignupForm({
   const [savedData, setSavedData] = useState(null)
   const [myValues, setMyValues] = useState(null)
 
-  const handleSaveData = (formik) => {
+  const handleSaveData = (formik: FormikValues) => {
     localStorage.setItem("savedData", JSON.stringify(formik.values))
   }
 
@@ -148,7 +136,7 @@ export function SignupForm({
   }
 
   useEffect(() => {
-    setSavedData(JSON.parse(localStorage.getItem("savedData")))
+    setSavedData(JSON.parse(localStorage.getItem("savedData")!))
   }, [])
 
   return (
